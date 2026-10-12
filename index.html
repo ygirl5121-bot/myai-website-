@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MyAI 智能助手</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f5fb;
+      color: #20243a;
+    }
+
+    .app {
+      max-width: 650px;
+      height: 100dvh;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      background: white;
+    }
+
+    header {
+      padding: 20px;
+      background: #3949ab;
+      color: white;
+    }
+
+    header h1 {
+      margin: 0 0 6px;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 13px;
+      opacity: .85;
+    }
+
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px;
+    }
+
+    .msg {
+      padding: 12px 15px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      max-width: 88%;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .bot {
+      background: #f0f2fa;
+      margin-right: auto;
+    }
+
+    .user {
+      background: #3949ab;
+      color: white;
+      margin-left: auto;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 8px;
+      padding: 14px;
+      border-top: 1px solid #eee;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid #d8dbea;
+      border-radius: 12px;
+      font-size: 16px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 0 18px;
+      background: #3949ab;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:active { opacity: .8; }
+
+    .note {
+      padding: 0 14px 12px;
+      text-align: center;
+      font-size: 11px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>✦ MyAI 智能助手</h1>
+      <p>你的想法，从这里开始</p>
+    </header>
+
+    <section id="chat" aria-live="polite">
+      <div class="msg bot">
+        你好！欢迎使用 MyAI 👋
+
+        我是你亲手制作的智能助手。
+        你可以先试着问我问题！
+      </div>
+    </section>
+
+    <form class="input-area" id="form">
+      <input
+        id="question"
+        placeholder="输入你的问题..."
+        autocomplete="off"
+        required
+      >
+      <button type="submit">发送</button>
+    </form>
+
+    <div class="note">
+      MyAI 初始体验版 · 当前为演示程序，尚未接入真实 AI
+    </div>
+  </main>
+
+  <script>
+    const chat = document.getElementById("chat");
+    const form = document.getElementById("form");
+    const input = document.getElementById("question");
+
+    function addMessage(text, who) {
+      const div = document.createElement("div");
+      div.className = "msg " + who;
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function myAI(question) {
+      const q = question.toLowerCase();
+
+      if (q.includes("你好") || q.includes("嗨")) {
+        return "你好！很高兴认识你！你想聊什么？";
+      }
+
+      if (q.includes("你是谁")) {
+        return "我是 MyAI，是你正在开发的 AI 网站的初始版本。";
+      }
+
+      if (q.includes("赚钱")) {
+        return "你可以先找到一个具体用户需求，再开发小工具、提供服务或制作订阅产品。先验证需求，再考虑收费。";
+      }
+
+      if (q.includes("学习") || q.includes("编程")) {
+        return "建议你从 HTML、CSS 和 JavaScript 开始，再学习如何连接 AI 模型。每天写一点代码，逐步完善你的产品。";
+      }
+
+      return "我收到你的问题了：「" + question +
+        "」\n\n目前我还是演示版本，还没有连接真正的 AI 模型。下一步，我们会给我接入 AI 大脑！";
+    }
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const question = input.value.trim();
+      if (!question) return;
+
+      addMessage(question, "user");
+      input.value = "";
+
+      const answer = myAI(question);
+      addMessage(answer, "bot");
+      input.focus();
+    });
+  </script>
+</body>
+</html>
